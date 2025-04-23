@@ -63,7 +63,7 @@ As seguintes preferências são armazenadas automaticamente:
 
 ## 🖼️ Screenshot
 
-![Mouse Jiggler UI](./screenshot.png)
+![Mouse Jiggler UI](/MouseJigglerGUI/screenshot.png)
 
 ---
 
