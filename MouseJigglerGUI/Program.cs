@@ -12,8 +12,9 @@ namespace MouseJigglerGUI
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             var mainForm = new Form1();
-
+#if !DEBUG
             mainForm.WindowState = FormWindowState.Minimized;
+#endif
             mainForm.ShowInTaskbar = false;
             mainForm.Load += (s, e) => mainForm.Hide();
 

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace MouseJigglerGUI
 {
@@ -24,12 +25,14 @@ namespace MouseJigglerGUI
         private void Form1_Load(object sender, EventArgs e)
         {
             chkAutoStart.Checked = AutoStartManager.IsAutoStartEnabled();
-
+            txtDesligarPc.Value = Properties.Settings.Default.InatividadeSegundos;
             numIntervalo.Value = Properties.Settings.Default.InatividadeSegundos;
             currentMode = Properties.Settings.Default.ModoFantasma ? MouseMode.Virtual : MouseMode.Real;
 
             checkMouseVirtual.Checked = StatusMouseVirtual();
             modoFantasmaToolStripMenuItem.Text = StatusMouseVirtual() ? "Modo Fantasma (Ativado)" : "Modo Fantasma (Desativado)";
+
+            VerificarDesligamentoAgendado();
 
             if (chkAutoStart.Checked)
                 btnToggle.PerformClick();
@@ -163,5 +166,78 @@ namespace MouseJigglerGUI
         }
 
         private bool StatusMouseVirtual() => currentMode == MouseMode.Virtual;
+
+        private void agendardesligamento_Click(object sender, EventArgs e)
+        {
+            int segundos = (int)txtDesligarPc.Value * 60;
+            var psi = new ProcessStartInfo("shutdown", $"/s /t {segundos}")
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            Process.Start(psi);
+
+            VerificarDesligamentoAgendado();
+
+            DateTime agendamento = DateTime.Now.AddSeconds(segundos);
+            string mensagem = $"Desligamento agendado para:\n {agendamento:dd/MM/yyyy} às {agendamento:HH:mm:ss}";
+
+            MessageBox.Show(mensagem, "Desligamento automático", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            lblDesligarPc.Text = $"Agendado: {DateTime.Now.AddSeconds(segundos).ToString("dd/MM/yyyy HH:mm:ss")}";
+        }
+
+        private void btnCancelarAgendamento_Click(object sender, EventArgs e)
+        {
+            var psi = new ProcessStartInfo("shutdown", "/a")
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            Process.Start(psi);
+
+            VerificarDesligamentoAgendado();
+
+            MessageBox.Show("O desligamento automático foi cancelado.",
+                  "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            lblDesligarPc.Text = $"Cancelado";
+        }
+
+
+        private void VerificarDesligamentoAgendado()
+        {
+            var psi = new ProcessStartInfo("shutdown", "/a")
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            try
+            {
+                using (var process = Process.Start(psi))
+                {
+                    string output = process.StandardOutput.ReadToEnd();
+                    process.WaitForExit();
+
+                    var agendamento = !(output.Contains("Não há nenhum desligamento") || output.Contains(" shutdown was in progress")) && process.ExitCode == 0;
+
+                    btnCancelarAgendamento.Enabled = agendamento;
+                    btnAgendar.Enabled = !agendamento;
+                }
+            }
+            catch
+            {
+
+                btnCancelarAgendamento.Enabled = false;
+                btnAgendar.Enabled = true;
+            }
+        }
     }
 }

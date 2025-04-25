@@ -45,17 +45,25 @@
             checkMouseVirtual = new CheckBox();
             groupBox1 = new GroupBox();
             label2 = new Label();
+            groupBox2 = new GroupBox();
+            btnCancelarAgendamento = new Button();
+            label3 = new Label();
+            lblDesligarPc = new Label();
+            btnAgendar = new Button();
+            txtDesligarPc = new NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)numIntervalo).BeginInit();
             contextMenuStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)txtDesligarPc).BeginInit();
             SuspendLayout();
             // 
             // btnToggle
             // 
             btnToggle.Font = new Font("Segoe UI", 11F);
-            btnToggle.Location = new Point(77, 165);
+            btnToggle.Location = new Point(15, 96);
             btnToggle.Name = "btnToggle";
-            btnToggle.Size = new Size(147, 45);
+            btnToggle.Size = new Size(242, 36);
             btnToggle.TabIndex = 4;
             btnToggle.Text = "Iniciar";
             btnToggle.UseVisualStyleBackColor = true;
@@ -63,17 +71,17 @@
             // 
             // numIntervalo
             // 
-            numIntervalo.Location = new Point(93, 37);
+            numIntervalo.Location = new Point(93, 20);
             numIntervalo.Name = "numIntervalo";
-            numIntervalo.Size = new Size(84, 27);
+            numIntervalo.Size = new Size(84, 25);
             numIntervalo.TabIndex = 1;
             // 
             // lblStatus
             // 
             lblStatus.Font = new Font("Segoe UI", 11F);
-            lblStatus.Location = new Point(6, 233);
+            lblStatus.Location = new Point(6, 135);
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(290, 20);
+            lblStatus.Size = new Size(261, 20);
             lblStatus.TabIndex = 2;
             lblStatus.Text = "Parado";
             lblStatus.TextAlign = ContentAlignment.MiddleCenter;
@@ -93,18 +101,18 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(15, 40);
+            label1.Location = new Point(15, 23);
             label1.Name = "label1";
-            label1.Size = new Size(70, 20);
+            label1.Size = new Size(66, 19);
             label1.TabIndex = 3;
             label1.Text = "Intervalo:";
             // 
             // chkAutoStart
             // 
             chkAutoStart.AutoSize = true;
-            chkAutoStart.Location = new Point(15, 71);
+            chkAutoStart.Location = new Point(15, 48);
             chkAutoStart.Name = "chkAutoStart";
-            chkAutoStart.Size = new Size(179, 24);
+            chkAutoStart.Size = new Size(166, 23);
             chkAutoStart.TabIndex = 2;
             chkAutoStart.Text = "Iniciar com o Windows";
             chkAutoStart.UseVisualStyleBackColor = true;
@@ -148,9 +156,9 @@
             // checkMouseVirtual
             // 
             checkMouseVirtual.AutoSize = true;
-            checkMouseVirtual.Location = new Point(15, 103);
+            checkMouseVirtual.Location = new Point(15, 69);
             checkMouseVirtual.Name = "checkMouseVirtual";
-            checkMouseVirtual.Size = new Size(130, 24);
+            checkMouseVirtual.Size = new Size(124, 23);
             checkMouseVirtual.TabIndex = 3;
             checkMouseVirtual.Text = "Mouse Virtual ?";
             checkMouseVirtual.UseVisualStyleBackColor = true;
@@ -159,13 +167,15 @@
             // 
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(lblStatus);
             groupBox1.Controls.Add(checkMouseVirtual);
+            groupBox1.Controls.Add(btnToggle);
             groupBox1.Controls.Add(numIntervalo);
             groupBox1.Controls.Add(chkAutoStart);
-            groupBox1.Font = new Font("Segoe UI", 11F);
+            groupBox1.Font = new Font("Segoe UI", 10F);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(277, 142);
+            groupBox1.Size = new Size(277, 162);
             groupBox1.TabIndex = 5;
             groupBox1.TabStop = false;
             groupBox1.Text = "Configurações";
@@ -173,20 +183,82 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(183, 40);
+            label2.Location = new Point(183, 23);
             label2.Name = "label2";
-            label2.Size = new Size(84, 20);
+            label2.Size = new Size(77, 19);
             label2.TabIndex = 4;
             label2.Text = "(Segundos)";
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(btnCancelarAgendamento);
+            groupBox2.Controls.Add(label3);
+            groupBox2.Controls.Add(lblDesligarPc);
+            groupBox2.Controls.Add(btnAgendar);
+            groupBox2.Controls.Add(txtDesligarPc);
+            groupBox2.Font = new Font("Segoe UI", 10F);
+            groupBox2.Location = new Point(12, 201);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(277, 162);
+            groupBox2.TabIndex = 6;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Desligar o PC automaticamente";
+            // 
+            // btnCancelarAgendamento
+            // 
+            btnCancelarAgendamento.Font = new Font("Segoe UI", 11F);
+            btnCancelarAgendamento.Location = new Point(15, 96);
+            btnCancelarAgendamento.Name = "btnCancelarAgendamento";
+            btnCancelarAgendamento.Size = new Size(245, 36);
+            btnCancelarAgendamento.TabIndex = 5;
+            btnCancelarAgendamento.Text = "Cancelar";
+            btnCancelarAgendamento.UseVisualStyleBackColor = true;
+            btnCancelarAgendamento.Click += btnCancelarAgendamento_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(102, 26);
+            label3.Name = "label3";
+            label3.Size = new Size(60, 19);
+            label3.TabIndex = 4;
+            label3.Text = "Minutos";
+            // 
+            // lblDesligarPc
+            // 
+            lblDesligarPc.Font = new Font("Segoe UI", 9F);
+            lblDesligarPc.Location = new Point(6, 135);
+            lblDesligarPc.Name = "lblDesligarPc";
+            lblDesligarPc.Size = new Size(261, 20);
+            lblDesligarPc.TabIndex = 2;
+            lblDesligarPc.Text = "Agendamento";
+            lblDesligarPc.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // btnAgendar
+            // 
+            btnAgendar.Font = new Font("Segoe UI", 11F);
+            btnAgendar.Location = new Point(15, 54);
+            btnAgendar.Name = "btnAgendar";
+            btnAgendar.Size = new Size(242, 36);
+            btnAgendar.TabIndex = 4;
+            btnAgendar.Text = "Agendar";
+            btnAgendar.UseVisualStyleBackColor = true;
+            btnAgendar.Click += agendardesligamento_Click;
+            // 
+            // txtDesligarPc
+            // 
+            txtDesligarPc.Location = new Point(15, 23);
+            txtDesligarPc.Name = "txtDesligarPc";
+            txtDesligarPc.Size = new Size(84, 25);
+            txtDesligarPc.TabIndex = 1;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(302, 262);
+            ClientSize = new Size(302, 371);
+            Controls.Add(groupBox2);
             Controls.Add(groupBox1);
-            Controls.Add(lblStatus);
-            Controls.Add(btnToggle);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -198,6 +270,9 @@
             contextMenuStrip1.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)txtDesligarPc).EndInit();
             ResumeLayout(false);
         }
 
@@ -218,5 +293,11 @@
         private ToolStripMenuItem modoFantasmaToolStripMenuItem;
         private GroupBox groupBox1;
         private Label label2;
+        private GroupBox groupBox2;
+        private Label label3;
+        private Label lblDesligarPc;
+        private Button btnAgendar;
+        private NumericUpDown txtDesligarPc;
+        private Button btnCancelarAgendamento;
     }
 }
