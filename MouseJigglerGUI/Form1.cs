@@ -179,7 +179,7 @@ namespace MouseJigglerGUI
 
             Process.Start(psi);
 
-            VerificarDesligamentoAgendado();
+            AtivarEDesativarBotoesAgendamento(true);
 
             DateTime agendamento = DateTime.Now.AddSeconds(segundos);
             string mensagem = $"Desligamento agendado para:\n {agendamento:dd/MM/yyyy} às {agendamento:HH:mm:ss}";
@@ -193,14 +193,16 @@ namespace MouseJigglerGUI
         {
             var psi = new ProcessStartInfo("shutdown", "/a")
             {
-                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
                 UseShellExecute = false,
+                CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
 
             Process.Start(psi);
 
-            VerificarDesligamentoAgendado();
+            AtivarEDesativarBotoesAgendamento(false);
 
             MessageBox.Show("O desligamento automático foi cancelado.",
                   "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -216,7 +218,8 @@ namespace MouseJigglerGUI
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
             };
 
             try
@@ -228,16 +231,20 @@ namespace MouseJigglerGUI
 
                     var agendamento = !(output.Contains("Não há nenhum desligamento") || output.Contains(" shutdown was in progress")) && process.ExitCode == 0;
 
-                    btnCancelarAgendamento.Enabled = agendamento;
-                    btnAgendar.Enabled = !agendamento;
+                    AtivarEDesativarBotoesAgendamento(agendamento);
                 }
             }
             catch
             {
-
                 btnCancelarAgendamento.Enabled = false;
                 btnAgendar.Enabled = true;
             }
+        }
+
+        private void AtivarEDesativarBotoesAgendamento(bool isAgendar)
+        {
+            btnCancelarAgendamento.Enabled = isAgendar;
+            btnAgendar.Enabled = !isAgendar;
         }
     }
 }
